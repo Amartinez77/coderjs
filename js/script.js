@@ -1,3 +1,5 @@
+// muestra la tabla de multiplicar de un nro ingresado hasta el 10
+
 let opt = parseInt(prompt("bienvenido! elige tus opciones: \n1- tablas de multiplicar \n2- salir \n* recuerda presionar F12 para ver los resultados "));
 
 while (opt != 2) {
@@ -20,5 +22,5 @@ while (opt != 2) {
         alert("opcion incorrecta, vuelva a intentarlo");
     }
 
-    opt = parseInt(prompt("bienvenido! elige tus opciones: 1- tablas de multiplicar \n 2- salir "));
+    opt = parseInt(prompt("Para continuar presiona 1 / para salir 2"));
 }
