@@ -25,17 +25,17 @@ class Pelicula {
 }
 
 const series = [
-    new Serie("Lost", 6, "misterio",1),
-    new Serie("friends", 10, "comedia",2),
-    new Serie("The walking Dead", 11, "terror",3),
-    new Serie("True Detective", 3, "drama",4)
+    new Serie("Lost", 6, "misterio", 1),
+    new Serie("friends", 10, "comedia", 2),
+    new Serie("The walking Dead", 11, "terror", 3),
+    new Serie("True Detective", 3, "drama", 4)
 ]
 
 const peliculas = [
-    new Pelicula("The Joker", 2019, "drama",1),
-    new Pelicula("Nadie", 2021, "suspenso",2),
-    new Pelicula("El resplandor", 1980, "terror",3),
-    new Pelicula("Busqueda Implacable", 2008, "accion",4)
+    new Pelicula("The Joker", 2019, "drama", 1),
+    new Pelicula("Nadie", 2021, "suspenso", 2),
+    new Pelicula("El resplandor", 1980, "terror", 3),
+    new Pelicula("Busqueda Implacable", 2008, "accion", 4)
 ]
 
 const pedidos = [];
@@ -46,7 +46,7 @@ console.log(peliculas);
 
 
 
-let opc = parseInt(prompt("Ingrese Opcion: 1- buscar series 2- buscar peliculas 3- Agregar pelicula 4- Mostrar peliculas 5- Mostrar series 6- salir"));
+let opc = parseInt(prompt("Ingrese Opcion: 1- buscar series 2- buscar peliculas 3- Agregar 4- Mostrar peliculas disponibles 5- Mostrar series disponibles 6- salir"));
 
 while (opc != 6) {
 
@@ -68,7 +68,7 @@ while (opc != 6) {
             break;
 
         case 2:
-            let buscarPeli = prompt('Escribí el nombre de la serie asi la buscamos');
+            let buscarPeli = prompt('Escribí el nombre de la pelicula asi la buscamos');
             const filtrado2 = peliculas.filter((titulo) => titulo.titulo.toLowerCase().includes(buscarPeli.toLowerCase()));
 
             if (filtrado2.length > 0) {
@@ -80,10 +80,10 @@ while (opc != 6) {
 
             break;
         case 3:
-            let opc3 = parseInt(prompt("que te gustaria ingresar? 1- peli 2- serie"));
+            let opc3 = parseInt(prompt("que te gustaria ingresar al catalogo? 1- Peliculas 2- Series o ingresa otro numero para salir"));
             if (opc3 == 1) {
 
-                let ingreso = prompt("Ingresa la pelicula : titulo, anio, género, separados por una barra diagonal (/)");
+                let ingreso = prompt("Ingresa la pelicula : titulo, año y género, separados por una barra diagonal (/) o ingresa x para salir");
 
                 if (ingreso.toUpperCase() == 'X') {
                     seguir = false;
@@ -98,21 +98,23 @@ while (opc != 6) {
 
                 console.log(peliculas);
 
-            }else if (opc3==2) {
-                let ingreso = prompt("Ingresa la pelicula : titulo, anio, género, separados por una barra diagonal (/)");
+            } else if (opc3 == 2) {
+                let ingreso2 = prompt("Ingresa la serie : titulo, temporadas y género, separados por una barra diagonal (/) o ingresa x para salir");
 
-                if (ingreso.toUpperCase() == 'X') {
+                if (ingreso2.toUpperCase() == 'X') {
                     seguir = false;
                     break;
                 }
 
-                let datos = ingreso.split('/');
-                console.log(datos);
-                const seri = new Serie(datos[0], parseInt(datos[1]), datos[2]);
+                let datos2 = ingreso2.split('/');
+                console.log(datos2);
+                const seri = new Serie(datos2[0], parseInt(datos2[1]), datos2[2]);
                 series.push(seri);
                 seri.asignarId(series);
 
                 console.log(series);
+            }else {
+                break;
             }
 
             break;
@@ -121,24 +123,26 @@ while (opc != 6) {
             function mostrar(peliculas) {
                 let info = '';
                 peliculas.forEach(element => {
-                    info += 'Título: ' + element.titulo + '\nAño de publicación: ' + element.anio + '\ngenero: ' + element.genero
+                    info += 'Título: ' + element.titulo + '\nAño de publicación: ' + element.anio + '\ngenero: ' + element.genero + '\n'
                 });
                 return info;
             }
 
             alert(mostrar(peliculas));
+            break;
 
 
         case 5:
-            function mostrar(series) {
+            function mostrar2(series) {
                 let info = '';
                 series.forEach(element => {
-                    info += 'Título: ' + element.titulo + '\nAño de publicación: ' + element.anio + '\ngenero: ' + element.genero
+                    info += 'Título: ' + element.titulo + '\ntemporadas: ' + element.temporadas + '\ngenero: ' + element.genero + '\n'
                 });
                 return info;
             }
 
-            alert(mostrar(series));
+            alert(mostrar2(series));
+            break;
 
 
 
@@ -146,5 +150,5 @@ while (opc != 6) {
             break;
     }
 
-    opc = parseInt(prompt("Ingrese Opcion: 1- buscar series 2- buscar peliculas 3- Agregar pelicula 4- Mostrar peliculas 5- Mostrar series 6- salir"));
+    opc = parseInt(prompt("Ingrese Opcion: 1- buscar series 2- buscar peliculas 3- Agregar 4- Mostrar peliculas disponibles 5- Mostrar series disponibles 6- salir"));
 }
