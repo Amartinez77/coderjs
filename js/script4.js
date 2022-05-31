@@ -1,9 +1,10 @@
 class Serie {
-    constructor(titulo, temporadas, genero, id) {
+    constructor(titulo, temporadas, genero, source, id) {
         this.id = id;
         this.titulo = titulo;
         this.temporadas = temporadas;
         this.genero = genero;
+        this.source = source;
     }
     asignarId(array) {
         this.id = array.length;
@@ -12,11 +13,12 @@ class Serie {
 }
 
 class Pelicula {
-    constructor(titulo, anio, genero, id) {
+    constructor(titulo, anio, genero, source, id) {
         this.id = id;
         this.titulo = titulo;
         this.anio = anio;
         this.genero = genero;
+        this.source = source;
     }
     asignarId(array) {
         this.id = array.length;
@@ -25,17 +27,17 @@ class Pelicula {
 }
 
 const series = [
-    new Serie("Lost", 6, "misterio", 1),
-    new Serie("friends", 10, "comedia", 2),
-    new Serie("The walking Dead", 11, "terror", 3),
-    new Serie("True Detective", 3, "drama", 4)
+    new Serie("Lost", 6, "misterio", "../image/lost.webp", 1),
+    new Serie("friends", 10, "comedia", "../image/friends.webp", 2),
+    new Serie("The walking Dead", 11, "terror", "../image/walkingdead.jpg", 3),
+    new Serie("True Detective", 3, "drama", "../image/truedetective.webp", 4)
 ]
 
 const peliculas = [
-    new Pelicula("The Joker", 2019, "drama", 1),
-    new Pelicula("Nadie", 2021, "suspenso", 2),
-    new Pelicula("El resplandor", 1980, "terror", 3),
-    new Pelicula("Busqueda Implacable", 2008, "accion", 4)
+    new Pelicula("The Joker", 2019, "drama", "../image/joker.webp", 1),
+    new Pelicula("Nadie", 2021, "suspenso", "../image/nobody.webp", 2),
+    new Pelicula("El resplandor", 1980, "terror", "../image/reesplandor.webp", 3),
+    new Pelicula("Busqueda Implacable", 2008, "accion", "../image/taken.webp", 4)
 ]
 
 const pedidos = [];
@@ -44,6 +46,29 @@ const pedidos = [];
 console.log(series);
 console.log(peliculas);
 
+let divCard = document.getElementById('contenedorPelis');
+const faraday = (array) => {
+
+    for (const element of array) {
+
+        let div = document.createElement('div')
+        div.className = 'card col-md-6'
+        div.innerHTML = `
+                        
+                          <img src="${element.source}" class="card-img-top" alt="...">
+                          <div class="card-body">
+                            <h5 class="card-title">${element.titulo}</h5>
+                            <p class="card-text">Calidad FullHD.</p>
+                            <a href="#" class="btn btn-primary">ver online</a>
+                          </div>
+
+                        `
+        console.log(div);
+        divCard.append(div);
+
+    }
+
+}
 
 
 let opc = parseInt(prompt("Ingrese Opcion: 1- buscar series 2- buscar peliculas 3- Agregar 4- Mostrar peliculas disponibles 5- Mostrar series disponibles 6- salir"));
@@ -113,7 +138,7 @@ while (opc != 6) {
                 seri.asignarId(series);
 
                 console.log(series);
-            }else {
+            } else {
                 break;
             }
 
@@ -129,6 +154,10 @@ while (opc != 6) {
             }
 
             alert(mostrar(peliculas));
+
+      
+            faraday(peliculas);
+
             break;
 
 
@@ -142,6 +171,12 @@ while (opc != 6) {
             }
 
             alert(mostrar2(series));
+
+
+
+
+            faraday(series);
+
             break;
 
 
@@ -152,3 +187,4 @@ while (opc != 6) {
 
     opc = parseInt(prompt("Ingrese Opcion: 1- buscar series 2- buscar peliculas 3- Agregar 4- Mostrar peliculas disponibles 5- Mostrar series disponibles 6- salir"));
 }
+
