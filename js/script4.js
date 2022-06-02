@@ -86,6 +86,8 @@ while (opc != 6) {
             if (filtrado.length > 0) {
                 const imprimible = filtrado.map((titulo) => titulo.titulo);
                 alert("Las series que se ajustan a tu busqueda son:\n- " + imprimible.join('\n- '));
+
+                faraday(filtrado);
             } else {
                 alert('Lo sentimos. No encontramos coincidencias en nuestro catálogo')
             }
@@ -99,6 +101,8 @@ while (opc != 6) {
             if (filtrado2.length > 0) {
                 const imprimible2 = filtrado2.map((titulo) => titulo.titulo);
                 alert("Las series que se ajustan a tu busqueda son:\n- " + imprimible2.join('\n- '));
+
+                faraday(filtrado2);
             } else {
                 alert('Lo sentimos. No encontramos coincidencias en nuestro catálogo')
             }
