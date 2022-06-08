@@ -47,6 +47,8 @@ const peliculas = [
 
 const pedidos = [];
 
+const busqReciente = [];
+
 console.log(series);
 console.log(peliculas);
 
@@ -54,6 +56,10 @@ let divCard = document.getElementById('contenedorPelis');
 
 //  funcion que crea las cards con los array de peliculas y series
 const faraday = (array) => {
+    let titulos = document.createElement('h3')
+    titulos.className = 'text-center'
+    titulos.innerHTML = ` <h3>resultados</h3> `
+    divCard.append(titulos);
 
     for (const element of array) {
 
@@ -77,9 +83,20 @@ const faraday = (array) => {
 }
 
 
+const limpiar = (divCard) => {
+
+    while (divCard.firstChild) {
+        divCard.removeChild(divCard.firstChild);
+    }
+}
+
+
+
+
 //  funcion que me trae el la opcion del value del select del html
 
 let cod2 = "";
+
 function selectHtml() {
     /* Para obtener el valor */
     let cod = document.getElementById("pppp").value;
@@ -97,10 +114,14 @@ function selectHtml() {
 //  funcion que me trae el texto ingresado en la busqueda
 let textoBuscar = document.getElementById('inputText');
 
+// localStorage.setItem("palabras", JSON.stringify(textoBuscar));
+console.log();
+
 let txt = '';
 textoBuscar.onchange = () => {
 
     txt = textoBuscar.value;
+
     console.log(txt);
 }
 
@@ -119,6 +140,7 @@ const filtrar = (texto, array) => {
     if (filtrado.length > 0) {
         const imprimible = filtrado.map((titulo) => titulo.titulo);
         alert("Las series que se ajustan a tu busqueda son:\n- " + imprimible.join('\n- '));
+        limpiar(divCard);
         faraday(filtrado);
     } else {
         alert('Lo sentimos. No encontramos coincidencias en nuestro catálogo')
@@ -128,16 +150,99 @@ const filtrar = (texto, array) => {
 
 //  el evento que se produce al hacer click al boton
 
+let contenedorRecientes = document.getElementById('recientes');
+
+const mostrarRecientes = (array) => {
+    // let contenedorRecientes = document.getElementsByClassName('recientes');
+
+    let titulos2 = document.createElement('h3')
+    titulos2.className = 'izq'
+    titulos2.innerHTML = ` <span>tus busquedas recientes:  </span> `
+    contenedorRecientes.append(titulos2);
+    for (const element of array) {
+
+        let spann = document.createElement('span')
+        spann.className = 'text-center'
+        spann.innerHTML = `
+                        
+                            
+                            
+                            ${element}
+                            
+                            
+
+                        `
+        console.log(spann);
+        contenedorRecientes.append(spann);
+
+    }
+
+
+
+    // if (array != 0) {
+    //     array.forEach(element => {
+            // let elements = ``;
+            // if (element.type == 'coffee') {
+        //     elements += `
+        //         tus busquedas recientes ${element}
+                
+                
+                
+            
+        // //     `;
+        //     // }
+        //     // en el boton guardamos el id del producto para luego reconocerlo en el evento click   
+        //     let h33 = document.createElement("span")
+        //     h33.setAttribute("class", "text-center");
+        //     h33.innerHTML = ` ${elements} `;
+        //     contenedorRecientes[0].appendChild(h33);
+        //     console.log(contenedorRecientes);
+        // });
+        // for (const element of array) {
+
+        // }
+        // cargar los eventos //
+
+
+    // }
+}
+
+const limpiar2 = (array) => {
+    alert("hola", array);
+
+    while (array.firstChild) {
+        array.removeChild(array.firstChild);
+    }
+}
+
+
+
+
+
+
+
+
 btnBuscar.addEventListener('click', () => {
 
     switch (cod2) {
         case '1':
             filtrar(txt, series);
+
+
+
+            busqReciente.push(txt)
+            localStorage.setItem("palabras", JSON.stringify(busqReciente));
+            // let contenedorRecientes = document.getElementsByClassName('recientes');
+            limpiar2(contenedorRecientes);
+            mostrarRecientes(busqReciente);
+
+
             break;
 
         case '2':
 
             filtrar(txt, peliculas);
+            localStorage.setItem("palabras", JSON.stringify(txt));
 
 
 
@@ -148,3 +253,7 @@ btnBuscar.addEventListener('click', () => {
     }
 
 })
+
+let arrayBreciente = localStorage.getItem(busqReciente)
+
+console.log(busqReciente);

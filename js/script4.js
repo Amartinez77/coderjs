@@ -159,7 +159,7 @@ while (opc != 6) {
 
             alert(mostrar(peliculas));
 
-      
+
             faraday(peliculas);
 
             break;
@@ -191,4 +191,3 @@ while (opc != 6) {
 
     opc = parseInt(prompt("Ingrese Opcion: 1- buscar series 2- buscar peliculas 3- Agregar 4- Mostrar peliculas disponibles 5- Mostrar series disponibles 6- salir"));
 }
-
