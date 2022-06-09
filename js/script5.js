@@ -32,22 +32,23 @@ class Pelicula {
 // array de series , es diferente al de peliculas, tiene otros elementos
 
 const series = [
-    new Serie("Lost", 6, "misterio", "../image/lost.webp", 1),
-    new Serie("friends", 10, "comedia", "../image/friends.webp", 2),
-    new Serie("The walking Dead", 11, "terror", "../image/walkingdead.jpg", 3),
-    new Serie("True Detective", 3, "drama", "../image/truedetective.webp", 4)
+    new Serie("Lost", 6, "misterio", "./image/lost.webp", 1),
+    new Serie("friends", 10, "comedia", "./image/friends.webp", 2),
+    new Serie("The walking Dead", 11, "terror", "./image/walkingdead.jpg", 3),
+    new Serie("True Detective", 3, "drama", "./image/truedetective.webp", 4)
 ]
 
 const peliculas = [
-    new Pelicula("The Joker", 2019, "drama", "../image/joker.webp", 1),
-    new Pelicula("Nadie", 2021, "suspenso", "../image/nobody.webp", 2),
-    new Pelicula("El resplandor", 1980, "terror", "../image/reesplandor.webp", 3),
-    new Pelicula("Busqueda Implacable", 2008, "accion", "../image/taken.webp", 4)
+    new Pelicula("The Joker", 2019, "drama", "./image/joker.webp", 1),
+    new Pelicula("Nadie", 2021, "suspenso", "./image/nobody.webp", 2),
+    new Pelicula("El resplandor", 1980, "terror", "./image/reesplandor.webp", 3),
+    new Pelicula("Busqueda Implacable", 2008, "accion", "./image/taken.webp", 4)
 ]
 
 const pedidos = [];
 
 const busqReciente = [];
+const busqReciente2 = [];
 
 console.log(series);
 console.log(peliculas);
@@ -114,7 +115,7 @@ function selectHtml() {
 //  funcion que me trae el texto ingresado en la busqueda
 let textoBuscar = document.getElementById('inputText');
 
-// localStorage.setItem("palabras", JSON.stringify(textoBuscar));
+
 console.log();
 
 let txt = '';
@@ -177,50 +178,28 @@ const mostrarRecientes = (array) => {
 
     }
 
-
-
-    // if (array != 0) {
-    //     array.forEach(element => {
-            // let elements = ``;
-            // if (element.type == 'coffee') {
-        //     elements += `
-        //         tus busquedas recientes ${element}
-                
-                
-                
-            
-        // //     `;
-        //     // }
-        //     // en el boton guardamos el id del producto para luego reconocerlo en el evento click   
-        //     let h33 = document.createElement("span")
-        //     h33.setAttribute("class", "text-center");
-        //     h33.innerHTML = ` ${elements} `;
-        //     contenedorRecientes[0].appendChild(h33);
-        //     console.log(contenedorRecientes);
-        // });
-        // for (const element of array) {
-
-        // }
-        // cargar los eventos //
-
-
-    // }
 }
 
 const limpiar2 = (array) => {
-    alert("hola", array);
-
     while (array.firstChild) {
         array.removeChild(array.firstChild);
     }
 }
 
+function borrarDatos(storage) {
+    storage.clear()
+}
+
+btnVaciarLocalStorage.addEventListener('click', () => {
+    borrarDatos(localStorage);
+    borrarDatos(sessionStorage);
+
+});
 
 
 
 
-
-
+// eventos del boton buscar
 
 btnBuscar.addEventListener('click', () => {
 
@@ -232,7 +211,7 @@ btnBuscar.addEventListener('click', () => {
 
             busqReciente.push(txt)
             localStorage.setItem("palabras", JSON.stringify(busqReciente));
-            // let contenedorRecientes = document.getElementsByClassName('recientes');
+            
             limpiar2(contenedorRecientes);
             mostrarRecientes(busqReciente);
 
@@ -242,9 +221,11 @@ btnBuscar.addEventListener('click', () => {
         case '2':
 
             filtrar(txt, peliculas);
-            localStorage.setItem("palabras", JSON.stringify(txt));
-
-
+            busqReciente2.push(txt)
+            localStorage.setItem("palabras", JSON.stringify(busqReciente2));
+            
+            limpiar2(contenedorRecientes);
+            mostrarRecientes(busqReciente2);
 
             break;
 
@@ -254,6 +235,7 @@ btnBuscar.addEventListener('click', () => {
 
 })
 
-let arrayBreciente = localStorage.getItem(busqReciente)
 
-console.log(busqReciente);
+
+
+
