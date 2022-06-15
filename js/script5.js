@@ -59,7 +59,7 @@ let divCard = document.getElementById('contenedorPelis');
 const faraday = (array) => {
     let titulos = document.createElement('h3')
     titulos.className = 'text-center'
-    titulos.innerHTML = ` <h3>resultados</h3> `
+    titulos.innerHTML = ` <h3>resultados que coinciden con su busqueda</h3> `
     divCard.append(titulos);
 
     for (const element of array) {
@@ -115,22 +115,29 @@ function selectHtml() {
 //  funcion que me trae el texto ingresado en la busqueda
 let textoBuscar = document.getElementById('inputText');
 
-
 console.log();
 
+
+
 let txt = '';
-textoBuscar.onchange = () => {
+textoBuscar.addEventListener('input', () => {
+    console.log(textoBuscar.value);
 
-    txt = textoBuscar.value;
-
-    console.log(txt);
-}
-
+    if (textoBuscar.value ==="") {
+        alert('ingresa una busqueda')
+        txt="";
+    } else {
+        txt = textoBuscar.value;
+    }
+})
 
 
 
 
 const btnBuscar = document.getElementById('botonResultado');
+
+
+let imprimible = [];
 
 // funcion que hace el filtrado 
 
@@ -139,44 +146,83 @@ const filtrar = (texto, array) => {
     const filtrado = array.filter((titulo) => titulo.titulo.toLowerCase().includes(texto.toLowerCase()));
 
     if (filtrado.length > 0) {
-        const imprimible = filtrado.map((titulo) => titulo.titulo);
+        imprimible = filtrado.map((titulo) => titulo.titulo);
         alert("Las series que se ajustan a tu busqueda son:\n- " + imprimible.join('\n- '));
         limpiar(divCard);
         faraday(filtrado);
+        createHistory(filtrado);
+        console.log(filtrado);
+
+
     } else {
         alert('Lo sentimos. No encontramos coincidencias en nuestro catálogo')
     }
 
 }
 
+
+let historial = [];
+
+
+
+// creando el array con el historial
+const createHistory = (array) => {
+    // let cart = [];
+
+    //  if (historial == 0) {
+    console.log(historial);
+
+    for (const product of array) {
+        historial.push({
+            id: product.id,
+            titulo: product.titulo,
+            temporadas: product.temporadas,
+            genero: product.genero,
+            source: product.source,
+            largo: 0,
+
+        })
+    }
+
+    localStorage.setItem("historial", JSON.stringify(historial));
+    console.log(JSON.stringify(historial));
+}
+
+
+
+
 //  el evento que se produce al hacer click al boton
 
-let contenedorRecientes = document.getElementById('recientes');
+let divCard3 = document.getElementById('contHistorial');
 
 const mostrarRecientes = (array) => {
-    // let contenedorRecientes = document.getElementsByClassName('recientes');
 
-    let titulos2 = document.createElement('h3')
-    titulos2.className = 'izq'
-    titulos2.innerHTML = ` <span>tus busquedas recientes:  </span> `
-    contenedorRecientes.append(titulos2);
+
+    let titulos = document.createElement('h3')
+    titulos.className = 'text-center'
+    titulos.innerHTML = ` <h3>Historial de busqueda</h3> `
+    divCard3.append(titulos);
+
+
     for (const element of array) {
-
-        let spann = document.createElement('span')
-        spann.className = 'text-center'
-        spann.innerHTML = `
+        console.log(element.titulo);
+        let div = document.createElement('div')
+        div.className = 'card col-md-4'
+        div.innerHTML = `
                         
-                            
-                            
-                            ${element}
-                            
-                            
+                            <img src="${element.source}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                            <h5 class="card-title">${element.titulo}</h5>
+                            <p class="card-text">Calidad FullHD.</p>
+                            <a href="#" class="btn btn-primary">ver online</a>
+                            </div>
 
                         `
-        console.log(spann);
-        contenedorRecientes.append(spann);
+        console.log(div);
+        divCard3.append(div);
 
     }
+
 
 }
 
@@ -193,8 +239,25 @@ function borrarDatos(storage) {
 btnVaciarLocalStorage.addEventListener('click', () => {
     borrarDatos(localStorage);
     borrarDatos(sessionStorage);
+    limpiar2(divCard3);
+    limpiar(divCard);
+    
 
 });
+
+
+
+
+console.log(historial);
+
+if (historial.length != 0) {
+    usuario = JSON.parse(localStorage.getItem('historial'));
+    console.log(usuario);
+    mostrarRecientes(usuario);
+
+}
+
+
 
 
 
@@ -202,40 +265,47 @@ btnVaciarLocalStorage.addEventListener('click', () => {
 // eventos del boton buscar
 
 btnBuscar.addEventListener('click', () => {
+    if (txt == "") {
+        alert("complete los campos");
+    } else {
+        switch (cod2) {
+            case '1':
+                // console.log(txt);
+                filtrar(txt, series);
+                // console.log(imprimible);
 
-    switch (cod2) {
-        case '1':
-            filtrar(txt, series);
+
+                limpiar2(divCard3);
+                let usuario = JSON.parse(localStorage.getItem('historial'));
+                // console.log(historial);
+                mostrarRecientes(usuario);
 
 
+                break;
 
-            busqReciente.push(txt)
-            localStorage.setItem("palabras", JSON.stringify(busqReciente));
+            case '2':
+
+                filtrar(txt, peliculas);
+              
+                limpiar2(divCard3);
+                let usuario2 = JSON.parse(localStorage.getItem('historial'));
+                // console.log(historial);
+                mostrarRecientes(usuario2);
             
-            limpiar2(contenedorRecientes);
-            mostrarRecientes(busqReciente);
 
+                break;
 
-            break;
-
-        case '2':
-
-            filtrar(txt, peliculas);
-            busqReciente2.push(txt)
-            localStorage.setItem("palabras", JSON.stringify(busqReciente2));
-            
-            limpiar2(contenedorRecientes);
-            mostrarRecientes(busqReciente2);
-
-            break;
-
-        default:
-            break;
+            default:
+                break;
+        }
     }
 
 })
 
 
+//  verifica que el localStore no este vacio 
+if (localStorage.length > 0) {
+    historial = JSON.parse(localStorage.getItem('historial'));
+    mostrarRecientes(historial);
 
-
-
+}
