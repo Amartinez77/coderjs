@@ -123,12 +123,22 @@ let txt = '';
 textoBuscar.addEventListener('input', () => {
     console.log(textoBuscar.value);
 
-    if (textoBuscar.value ==="") {
-        alert('ingresa una busqueda')
-        txt="";
-    } else {
-        txt = textoBuscar.value;
-    }
+    // if (textoBuscar.value ==="") {
+    //     alert('ingresa una busqueda')
+    //     txt="";
+    // } else {
+    //     txt = textoBuscar.value;
+    // }
+
+    //  
+
+    textoBuscar.value === "" ? txt = "" : txt = textoBuscar.value;
+
+
+
+
+
+
 })
 
 
@@ -205,14 +215,25 @@ const mostrarRecientes = (array) => {
 
 
     for (const element of array) {
+
+
+        //  aplicando destructuracion
+
+        let {source, titulo} = element;
+
+        
+        console.log("el source", source);
+        console.log("el titulo", titulo);
+
+
         console.log(element.titulo);
         let div = document.createElement('div')
         div.className = 'card col-md-4'
         div.innerHTML = `
                         
-                            <img src="${element.source}" class="card-img-top" alt="...">
+                            <img src="${source}" class="card-img-top" alt="...">
                             <div class="card-body">
-                            <h5 class="card-title">${element.titulo}</h5>
+                            <h5 class="card-title">${titulo}</h5>
                             <p class="card-text">Calidad FullHD.</p>
                             <a href="#" class="btn btn-primary">ver online</a>
                             </div>
@@ -241,7 +262,7 @@ btnVaciarLocalStorage.addEventListener('click', () => {
     borrarDatos(sessionStorage);
     limpiar2(divCard3);
     limpiar(divCard);
-    
+
 
 });
 
@@ -266,7 +287,15 @@ if (historial.length != 0) {
 
 btnBuscar.addEventListener('click', () => {
     if (txt == "") {
-        alert("complete los campos");
+
+        // libreria sweet alert 2
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Tienes que completar los campos!',
+            footer: '<<  BuscaTuPeli.com  >>'
+        })
     } else {
         switch (cod2) {
             case '1':
@@ -286,12 +315,12 @@ btnBuscar.addEventListener('click', () => {
             case '2':
 
                 filtrar(txt, peliculas);
-              
+
                 limpiar2(divCard3);
                 let usuario2 = JSON.parse(localStorage.getItem('historial'));
                 // console.log(historial);
                 mostrarRecientes(usuario2);
-            
+
 
                 break;
 
