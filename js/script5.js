@@ -50,6 +50,13 @@ const pedidos = [];
 const busqReciente = [];
 const busqReciente2 = [];
 
+
+const URLimg = 'https://image.tmdb.org/t/p/w500/';
+
+
+
+
+
 console.log(series);
 console.log(peliculas);
 
@@ -123,21 +130,7 @@ let txt = '';
 textoBuscar.addEventListener('input', () => {
     console.log(textoBuscar.value);
 
-    // if (textoBuscar.value ==="") {
-    //     alert('ingresa una busqueda')
-    //     txt="";
-    // } else {
-    //     txt = textoBuscar.value;
-    // }
-
-    //  
-
     textoBuscar.value === "" ? txt = "" : txt = textoBuscar.value;
-
-
-
-
-
 
 })
 
@@ -149,48 +142,26 @@ const btnBuscar = document.getElementById('botonResultado');
 
 let imprimible = [];
 
-// funcion que hace el filtrado 
-
-const filtrar = (texto, array) => {
-
-    const filtrado = array.filter((titulo) => titulo.titulo.toLowerCase().includes(texto.toLowerCase()));
-
-    if (filtrado.length > 0) {
-        imprimible = filtrado.map((titulo) => titulo.titulo);
-        alert("Las series que se ajustan a tu busqueda son:\n- " + imprimible.join('\n- '));
-        limpiar(divCard);
-        faraday(filtrado);
-        createHistory(filtrado);
-        console.log(filtrado);
-
-
-    } else {
-        alert('Lo sentimos. No encontramos coincidencias en nuestro catálogo')
-    }
-
-}
-
-
 let historial = [];
 
 
 
 // creando el array con el historial
-const createHistory = (array) => {
-    // let cart = [];
 
-    //  if (historial == 0) {
-    console.log(historial);
+const createHistory = (array, cod2) => {
 
-    for (const product of array) {
+    console.log(array);
+    if (cod2 == 1) {
         historial.push({
-            id: product.id,
-            titulo: product.titulo,
-            temporadas: product.temporadas,
-            genero: product.genero,
-            source: product.source,
-            largo: 0,
-
+            id: array.id,
+            source: array.poster_path,
+            titulo: array.name
+        })
+    } else {
+        historial.push({
+            id: array.id,
+            source: array.poster_path,
+            titulo: array.title
         })
     }
 
@@ -219,19 +190,24 @@ const mostrarRecientes = (array) => {
 
         //  aplicando destructuracion
 
-        let {source, titulo} = element;
+        let {
+            source,
+            titulo,
+            name
+        } = element;
 
-        
+        let pagina = 'https://image.tmdb.org/t/p/w500';
+        console.log(pagina);
         console.log("el source", source);
         console.log("el titulo", titulo);
-
+        console.log("el titulo", name);
 
         console.log(element.titulo);
         let div = document.createElement('div')
         div.className = 'card col-md-4'
         div.innerHTML = `
                         
-                            <img src="${source}" class="card-img-top" alt="...">
+                            <img src = "${pagina}${element.source}" class = "card-img-top" alt = "...">
                             <div class="card-body">
                             <h5 class="card-title">${titulo}</h5>
                             <p class="card-text">Calidad FullHD.</p>
@@ -299,28 +275,38 @@ btnBuscar.addEventListener('click', () => {
     } else {
         switch (cod2) {
             case '1':
-                // console.log(txt);
-                filtrar(txt, series);
-                // console.log(imprimible);
 
-
-                limpiar2(divCard3);
-                let usuario = JSON.parse(localStorage.getItem('historial'));
-                // console.log(historial);
-                mostrarRecientes(usuario);
+                let timerInterval
+                Swal.fire({
+                    title: 'Espere unos instantes',
+                    html: 'buscando en nuestra base de datos <b></b> milliseconds.',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading()
+                        const b = Swal.getHtmlContainer().querySelector('b')
+                        timerInterval = setInterval(() => {
+                            b.textContent = Swal.getTimerLeft()
+                        }, 100)
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval)
+                    }
+                }).then((result) => {
+                    /* Read more about handling dismissals below */
+                    buscarSeries(URLbuscarSeries + '&query=' + txt);
+                    limpiar2(divCard3);
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        console.log('I was closed by the timer')
+                    }
+                })
 
 
                 break;
 
             case '2':
 
-                filtrar(txt, peliculas);
-
-                limpiar2(divCard3);
-                let usuario2 = JSON.parse(localStorage.getItem('historial'));
-                // console.log(historial);
-                mostrarRecientes(usuario2);
-
+                alerta();
 
                 break;
 
@@ -336,5 +322,301 @@ btnBuscar.addEventListener('click', () => {
 if (localStorage.length > 0) {
     historial = JSON.parse(localStorage.getItem('historial'));
     mostrarRecientes(historial);
+
+} else {
+    let usuario = JSON.parse(localStorage.getItem('historial'));
+}
+
+
+
+//  defino las constantes que uso para el uso de la API
+
+const APIKEY = 'api_key=e72726580f0f1f91aad3742a0b9f3c33';
+const URLBASE = 'https://api.themoviedb.org/3/';
+const URLbuscar = URLBASE + 'search/movie?' + APIKEY;
+const URLbuscarSeries = URLBASE + 'search/tv?' + APIKEY;
+const URL = URLBASE + 'discover/movie?certification_country=US&certification.lte=G&sort_by=popularity.desc&' + APIKEY;
+const URLesp = URLbuscar + '&language=es'
+
+
+
+console.log(URL);
+
+//  funciones que realizan el fetch
+
+function buscarPeliculas(url) {
+    fetch(url)
+        .then(response => response.json())
+        .then(response => {
+            mostrar(response.results);
+
+            filtrarPeliculas(txt, response.results);
+        })
+}
+
+function buscarSeries(url) {
+    fetch(url)
+        .then(response => response.json())
+        .then(response => {
+            mostrarSeries(response.results);
+            filtrarSeries(txt, response.results);
+        })
+}
+
+//  funcion que voy a agregar para la entrega final, busca en que servicio esta disponible
+
+function buscarProvedor(url) {
+    fetch(url)
+        .then(response => response.json())
+        .then(response => {
+            console.log(response.results);
+            mostrarProv(response.results);
+            createHistory(response.results);
+
+            return response.results;
+        })
+}
+
+let divReco = document.getElementById('recomend');
+
+// funcion que muestra peliculas relacionadas
+
+function mostrar(datos) {
+    console.log(datos);
+    divReco.innerHTML = '';
+    let titulos = document.createElement('h3')
+    titulos.className = 'text-center'
+    titulos.innerHTML = ` <h3>busquedas relacionadas</h3> `
+    divReco.append(titulos);
+
+
+    datos.forEach(element => {
+        let {
+            title,
+            poster_path,
+        } = element;
+        console.log(element.title);
+
+
+        let titu = document.createElement('div');
+        titu.classList.add('card', 'col-md-3');
+        titu.innerHTML = ` <img src="${URLimg}${poster_path}" alt="">
+                                    <h3>${title}</h3> 
+                                    
+                                    `
+
+        divReco.append(titu);
+
+
+    });
+
+}
+
+//  funcion que muestra en que servicio esta disponible (netflix), todavia no esta en uso
+
+function mostrarProv(datos2) {
+    console.log(datos2);
+    console.log(datos2.AR.flatrate[0].provider_name);
+    let pp = datos2.AR.flatrate[0].provider_name;
+    let nn = 'disponible en ' + pp;
+    console.log(nn);
+
+}
+
+//  funcion que no esta en uso, busca el ID
+
+function netflix(id) {
+
+    let URLprov = URLBASE + 'movie/' + id + '/watch/providers?' + APIKEY;
+
+    buscarProvedor(URLprov);
+    console.log(URLprov);
+    return URLprov;
+
+}
+
+
+// funcion que hace el filtrado de peliculas 
+
+const filtrarPeliculas = (texto, array) => {
+    console.log(texto);
+    console.log(array);
+    console.log(array[0].title);
+    var arr = Object.keys(array).map(function (key) {
+        return [Number(key), array[key]];
+    });
+    console.log(arr);
+
+    const filtrado = array.filter((title) => array[0].title.toLowerCase().includes(texto.toLowerCase()));
+
+
+    console.log(array.find(titulo => titulo.title.toLowerCase === (texto.toLowerCase)));
+    const filtrado3 = array.find(titulo => titulo.title.toLowerCase === (texto.toLowerCase));
+
+    console.log(filtrado3);
+    console.log(filtrado3.length);
+
+
+    console.log(filtrado);
+
+
+    // Object.entries(filtrado3).length === 0
+    if (Object.entries(filtrado3).length > 0) {
+        // imprimible = filtrado.map((array) => array.title);
+
+        // alert("Las series que se ajustan a tu busqueda son:\n- " + imprimible.join('\n- '));
+        // limpiar(divCard);
+        mostrarFiltrado(filtrado3, cod2);
+        createHistory(filtrado3, cod2);
+        // console.log(imprimible);
+
+
+    } else {
+        alert('Lo sentimos. No encontramos coincidencias en nuestro catálogo')
+    }
+
+}
+
+let divReco5 = document.getElementById('busqueda');
+
+
+// funcion que muestra la serie ya filtrada
+
+function mostrarFiltrado(datos, cod2) {
+    console.log(datos);
+    divReco5.innerHTML = '';
+
+    let titulos = document.createElement('h3')
+    titulos.className = 'text-center'
+    titulos.innerHTML = ` <h3>resultado de tu busqueda</h3> `
+    divReco5.append(titulos);
+
+    if (cod2 == 1) {
+        let {
+            name,
+            poster_path,
+        } = datos;
+
+        let titu = document.createElement('div');
+        titu.classList.add('card', 'col-md-3');
+        titu.innerHTML = ` <img src="${URLimg}${poster_path}" alt="">
+                                    <h3>${name}</h3> 
+                                    
+                                    `
+
+        divReco5.append(titu);
+    } else {
+        let {
+            title,
+            poster_path,
+        } = datos;
+
+        let titu = document.createElement('div');
+        titu.classList.add('card', 'col-md-3');
+        titu.innerHTML = ` <img src="${URLimg}${poster_path}" alt="">
+                                    <h3>${title}</h3> 
+                                    
+                                    `
+
+        divReco5.append(titu);
+    }
+
+
+
+};
+
+
+//  funcion que muestra las series relacionadas con la busqueda
+
+function mostrarSeries(datos) {
+    console.log(datos);
+    divReco.innerHTML = '';
+    let titulos = document.createElement('h3')
+    titulos.className = 'text-center'
+    titulos.innerHTML = ` <h3>busquedas relacionadas</h3> `
+    divReco.append(titulos);
+
+
+    datos.forEach(element => {
+        let {
+            name,
+            poster_path,
+        } = element;
+        console.log(element.name);
+
+        let titu = document.createElement('div');
+        titu.classList.add('card', 'col-md-3');
+        titu.innerHTML = ` <img src="${URLimg}${poster_path}" alt="">
+                                    <h3>${name}</h3> 
+                                    
+                                    `
+
+        divReco.append(titu);
+
+
+    });
+
+}
+
+
+// funcion que hace el filtrado de las series
+
+const filtrarSeries = (texto, array) => {
+
+    var arr = Object.keys(array).map(function (key) {
+        return [Number(key), array[key]];
+    });
+    console.log(arr);
+
+
+    console.log(array.find(titulo => titulo.name.toLowerCase === (texto.toLowerCase)));
+    const filtrado3 = array.find(titulo => titulo.name.toLowerCase === (texto.toLowerCase));
+    // console.log(filtrado2);
+    console.log(filtrado3);
+    console.log(filtrado3.length);
+
+
+
+
+    if (Object.entries(filtrado3).length > 0) {
+
+        mostrarFiltrado(filtrado3, cod2);
+        createHistory(filtrado3, cod2);
+        console.log(imprimible);
+
+
+    } else {
+        alert('Lo sentimos. No encontramos coincidencias en nuestro catálogo')
+    }
+
+}
+
+//  funcion que carga un loader...
+
+function alerta() {
+    let timerInterval
+    Swal.fire({
+        title: 'Espere unos instantes',
+        html: 'buscando en nuestra base de datos <b></b> milliseconds.',
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: () => {
+            Swal.showLoading()
+            const b = Swal.getHtmlContainer().querySelector('b')
+            timerInterval = setInterval(() => {
+                b.textContent = Swal.getTimerLeft()
+            }, 100)
+        },
+        willClose: () => {
+            clearInterval(timerInterval)
+        }
+    }).then((result) => {
+        /* Read more about handling dismissals below */
+        buscarPeliculas(URLesp + '&query=' + txt);
+        limpiar2(divCard3);
+        if (result.dismiss === Swal.DismissReason.timer) {
+            console.log('I was closed by the timer')
+        }
+    })
 
 }
