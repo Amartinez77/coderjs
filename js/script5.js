@@ -336,7 +336,10 @@ const URLBASE = 'https://api.themoviedb.org/3/';
 const URLbuscar = URLBASE + 'search/movie?' + APIKEY;
 const URLbuscarSeries = URLBASE + 'search/tv?' + APIKEY;
 const URL = URLBASE + 'discover/movie?certification_country=US&certification.lte=G&sort_by=popularity.desc&' + APIKEY;
-const URLesp = URLbuscar + '&language=es'
+// const URLesp = URLbuscar + '&language=es'
+const URLesp = URLbuscar + '&language=es-AR';
+const URLest = URLBASE + 'discover/movie?' + APIKEY + '&language=es-AR&primary_release_date.gte=2022-05-01&primary_release_date.lte=2022-06-25';
+
 
 
 
@@ -362,6 +365,20 @@ function buscarSeries(url) {
             filtrarSeries(txt, response.results);
         })
 }
+
+
+
+function buscarEst(url) {
+    fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            estrenos(data);
+            const datas = data;
+        })
+}
+
+
+
 
 //  funcion que voy a agregar para la entrega final, busca en que servicio esta disponible
 
@@ -620,3 +637,112 @@ function alerta() {
     })
 
 }
+
+
+// let divEst = document.getElementById('carrusel');
+
+let divEst = document.getElementById('glid2')
+
+function estrenos(datos) {
+    console.log(datos);
+
+    console.log(typeof (datos));
+    console.log(datos.results);
+    console.log(JSON.stringify(datos));
+    divReco.innerHTML = '';
+
+    console.log(datos.results[0]);
+
+    console.log(datos.results[0].title);
+    let titulo = datos.results[0].title;
+    let path = datos.results[0].poster_path;
+
+    let primero = datos.results.shift();
+    console.log(primero);
+    console.log(datos.results);
+
+
+
+    datos.results.forEach(element => {
+        let {
+            title,
+            poster_path,
+        } = element;
+        console.log(element.title);
+        let pagina = 'https://image.tmdb.org/t/p/w500';
+
+        let div = document.createElement('div');
+        div.className = 'carousel__elemento';
+        div.innerHTML = ` <img src="${pagina}${poster_path}" alt="">
+                                    
+                                    `
+        console.log(div);
+        divEst.append(div);
+
+
+
+
+    });
+
+
+
+
+}
+
+// buscarEst(URLest);
+
+
+
+
+
+
+
+
+// buscarEst2(URLest);
+
+window.addEventListener('load', function () {
+
+    // const URLest = URLBASE + 'discover/movie?' + APIKEY + '&language=es-AR&primary_release_date.gte=2022-05-01&primary_release_date.lte=2022-06-25';
+
+    buscarEst2(URLest);
+
+    function buscarEst2(url) {
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                ggg(data);
+
+            })
+    }
+
+    function ggg(data) {
+        console.log(data);
+
+        data.results.forEach(element => {
+            let {
+                title,
+                poster_path,
+            } = element;
+            console.log(element.title);
+            let pagina = 'https://image.tmdb.org/t/p/w500';
+
+            let div = document.createElement('div');
+            div.className = 'carousel__elemento';
+            div.innerHTML = ` <img src="${pagina}${poster_path}" alt="">
+                                    
+                                    `
+            console.log(div);
+            divEst.append(div);
+        });
+    }
+    new Glider(document.querySelector('.carousel__lista'), {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: '.carousel__indicadores',
+        arrows: {
+            prev: '.carousel__anterior',
+            next: '.carousel__siguiente'
+        }
+
+    });
+});
