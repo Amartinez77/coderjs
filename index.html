@@ -12,8 +12,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glider-js@1.7.7/glider.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glider-js@1.7.7/glider.min.css"> -->
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glider-js@1.7.7/glider.css">
 
 
     <link href="./styles/styles.css" rel="stylesheet">
@@ -23,8 +24,8 @@
 <body>
 
 
-    <nav class="navbar navbar-expand-lg container sticky-top">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg fixed-top navC">
+        <div class="container">
             <a class="navbar-brand" href="#">BuscaTuPeli</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -37,10 +38,10 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Peliculas</a>
+                        <a class="nav-link" href="#sectionEst">Peliculas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Series</a>
+                        <a class="nav-link" href="#sectionSeries">Series</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Nosotros</a>
@@ -62,210 +63,35 @@
 
     </header>
 
-    <div class="carousel">
-        <div class="carousel__contenedor">
-            <button aria-label="Anterior" class="carousel__anterior">
-                <i class="fas fa-chevron-left"></i>
-            </button>
 
-            <div class="carousel__lista" id="glid2">
 
-            </div>
 
-            <button aria-label="Siguiente" class="carousel__siguiente">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
+    <div class="carrusel" id="fotos">
 
-        <div role="tablist" class="carousel__indicadores"></div>
+    </div>
+
+
+
+    <button aria-label="Previous" class="glider-prev">«</button>
+    <button aria-label="Next" class="glider-next">»</button>
+    <div role="tablist" class="dots"></div>
     </div>
 
 
 
 
 
-
-
     <main class="container text-center">
-        <!-- <h3 class="py-4">ESTRENOS </h3>
-        <div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4">
-            <div class="col">
-                <div class="card h-100">
-                    <img src="#" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional
-                            content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a short card.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional
-                            content.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional
-                            content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional
-                            content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
+        <section class="row" id="sectionEst">
+            <h2 class="text-start">Peliculas estrenos</h2>
+            <div class="linea mt-2 mb-4"></div>
+        </section>
 
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional
-                            content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional
-                            content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional
-                            content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional
-                            content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional
-                            content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional
-                            content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional
-                            content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional
-                            content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional
-                            content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional
-                            content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-
+        <section class="row" id="sectionSeries">
+            <h3 class="text-start mt-4">Series Estrenos</h3>
+            <div class="linea mt-2 mb-4"></div>
+        </section>
 
 
 
@@ -320,8 +146,7 @@
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!--  glider.js -->
-    <script src="https://cdn.jsdelivr.net/npm/glider-js@1.7.7/glider.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/glider-js@1.7.7/glider.js"></script>
 
     <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
 

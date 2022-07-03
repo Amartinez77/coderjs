@@ -63,6 +63,7 @@ console.log(peliculas);
 let divCard = document.getElementById('contenedorPelis');
 
 //  funcion que crea las cards con los array de peliculas y series
+
 const faraday = (array) => {
     let titulos = document.createElement('h3')
     titulos.className = 'text-center'
@@ -204,7 +205,7 @@ const mostrarRecientes = (array) => {
 
         console.log(element.titulo);
         let div = document.createElement('div')
-        div.className = 'card col-md-4'
+        div.className = 'card col-md-2'
         div.innerHTML = `
                         
                             <img src = "${pagina}${element.source}" class = "card-img-top" alt = "...">
@@ -339,9 +340,11 @@ const URL = URLBASE + 'discover/movie?certification_country=US&certification.lte
 // const URLesp = URLbuscar + '&language=es'
 const URLesp = URLbuscar + '&language=es-AR';
 const URLest = URLBASE + 'discover/movie?' + APIKEY + '&language=es-AR&primary_release_date.gte=2022-05-01&primary_release_date.lte=2022-06-25';
-
-
-
+const URLpreg = URLBASE + 'discover/movie?' + APIKEY + '&language=es-AR&';
+const URLpregSerie = URLBASE + 'discover/tv?' + APIKEY + '&language=es-AR&';
+const URLestr = URLpreg + 'primary_release_year=2022';
+const URLpSeries = URLpregSerie + 'sort_by=popularity.desc';
+// https://api.themoviedb.org/3/discover/tv?api_key=e72726580f0f1f91aad3742a0b9f3c33&language=es-AR&&sort_by=popularity.desc
 
 console.log(URL);
 
@@ -376,6 +379,20 @@ function buscarEst(url) {
             const datas = data;
         })
 }
+
+let divS = document.getElementById('sectionSeries');
+
+function estrenos2022(url) {
+    fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(divS);
+            url == URLestr ? mostrarEstreno(data) : sectionIndex(data, divS)
+            
+            console.log(data);
+        })
+}
+
 
 
 
@@ -641,7 +658,7 @@ function alerta() {
 
 // let divEst = document.getElementById('carrusel');
 
-let divEst = document.getElementById('glid2')
+let divEst = document.getElementById('fotos')
 
 function estrenos(datos) {
     console.log(datos);
@@ -672,7 +689,7 @@ function estrenos(datos) {
         let pagina = 'https://image.tmdb.org/t/p/w500';
 
         let div = document.createElement('div');
-        div.className = 'carousel__elemento';
+        div.className = 'fotosDiv';
         div.innerHTML = ` <img src="${pagina}${poster_path}" alt="">
                                     
                                     `
@@ -699,50 +716,135 @@ function estrenos(datos) {
 
 
 // buscarEst2(URLest);
+buscarEst2(URLest);
 
-window.addEventListener('load', function () {
+function buscarEst2(url) {
+    fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            ggg(data);
 
-    // const URLest = URLBASE + 'discover/movie?' + APIKEY + '&language=es-AR&primary_release_date.gte=2022-05-01&primary_release_date.lte=2022-06-25';
+        })
+}
 
-    buscarEst2(URLest);
 
-    function buscarEst2(url) {
-        fetch(url)
-            .then((response) => response.json())
-            .then((data) => {
-                ggg(data);
 
-            })
-    }
+function ggg(data) {
+    console.log(data);
 
-    function ggg(data) {
-        console.log(data);
 
-        data.results.forEach(element => {
-            let {
-                title,
-                poster_path,
-            } = element;
-            console.log(element.title);
-            let pagina = 'https://image.tmdb.org/t/p/w500';
+    let div1 = document.createElement('div');
+    div1.className = 'glider-contain';
+    divEst.append(div1);
+    let div2 = document.createElement('div')
+    div2.className = 'glider';
+    div1.appendChild(div2);
 
-            let div = document.createElement('div');
-            div.className = 'carousel__elemento';
-            div.innerHTML = ` <img src="${pagina}${poster_path}" alt="">
+
+    data.results.forEach(element => {
+        let {
+            title,
+            poster_path,
+        } = element;
+        console.log(element.title);
+        let pagina = 'https://image.tmdb.org/t/p/w500';
+
+        let div = document.createElement('div');
+        // div.className = 'fotosDiv';
+        div.innerHTML = ` <img src="${pagina}${poster_path}" class = "w-100" alt="">
                                     
                                     `
-            console.log(div);
-            divEst.append(div);
-        });
-    }
-    new Glider(document.querySelector('.carousel__lista'), {
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        dots: '.carousel__indicadores',
+        console.log(div);
+        div2.append(div);
+    });
+
+    new Glider(document.querySelector('.glider'), {
+        slidesToShow: 5,
+        slidesToScroll: 5,
+        draggable: true,
+        dots: '.dots',
         arrows: {
-            prev: '.carousel__anterior',
-            next: '.carousel__siguiente'
+            prev: '.glider-prev',
+            next: '.glider-next'
         }
+    });
+
+
+}
+
+let divSeries = document.getElementById('sectionEst');
+
+function mostrarEstreno(datos) {
+
+    console.log(datos);
+    console.log(datos.results);
+    
+    let pagina = 'https://image.tmdb.org/t/p/w500';
+
+    datos.results.forEach(element => {
+        let {
+            title,
+            poster_path,
+        } = element;
+        console.log(element.title);
+
+        let div = document.createElement('div');
+        div.className = 'card  col-md-2 col-sm-3 col-6';
+        div.innerHTML = `
+                                    <img src = "${pagina}${poster_path}" class = "card-img-top" alt = "...">
+
+                        `
+        console.log(div);
+        divSeries.append(div);
+
 
     });
-});
+
+}
+
+estrenos2022(URLestr);
+
+
+function sectionIndex(datos, ub) {
+
+    console.log(datos);
+    console.log(datos.results);
+
+    let pagina = 'https://image.tmdb.org/t/p/w500';
+
+    datos.results.forEach(element => {
+        let {
+            title,
+            poster_path,
+        } = element;
+        console.log(element.title);
+
+        let div = document.createElement('div');
+        div.className = 'card  col-md-2 col-sm-3 col-6';
+        div.innerHTML = `
+                                    <img src = "${pagina}${poster_path}" class = "card-img-top" alt = "...">
+
+                        `
+        console.log(div);
+        ub.append(div);
+
+
+    });
+
+}
+
+estrenos2022(URLpSeries);
+
+const navColor = document.querySelector('.navC');
+
+window.onscroll= function () {
+    let pos = window.scrollY;
+    console.log(pos);
+    if (pos>=100) {
+        
+        navColor.classList.add('navC2');
+
+    } else {
+        navColor.classList.remove('navC2');
+    }
+}
