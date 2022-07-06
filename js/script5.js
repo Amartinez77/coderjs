@@ -371,24 +371,17 @@ function buscarSeries(url) {
 
 
 
-function buscarEst(url) {
-    fetch(url)
-        .then((response) => response.json())
-        .then((data) => {
-            estrenos(data);
-            const datas = data;
-        })
-}
-
-let divS = document.getElementById('sectionSeries');
+let divPeliculas = document.getElementById('sectionEst');
+let divSeries2 = document.getElementById('sectionSeries');
 
 function estrenos2022(url) {
     fetch(url)
         .then((response) => response.json())
         .then((data) => {
-            console.log(divS);
-            url == URLestr ? mostrarEstreno(data) : sectionIndex(data, divS)
             
+            // url == URLestr ? mostrarEstreno(data, divSeries) : sectionIndex(data, divS)
+            url == URLestr ? mostrarEstreno(data, divPeliculas) : mostrarEstreno(data, divSeries2)
+
             console.log(data);
         })
 }
@@ -656,67 +649,8 @@ function alerta() {
 }
 
 
-// let divEst = document.getElementById('carrusel');
-
-let divEst = document.getElementById('fotos')
-
-function estrenos(datos) {
-    console.log(datos);
-
-    console.log(typeof (datos));
-    console.log(datos.results);
-    console.log(JSON.stringify(datos));
-    divReco.innerHTML = '';
-
-    console.log(datos.results[0]);
-
-    console.log(datos.results[0].title);
-    let titulo = datos.results[0].title;
-    let path = datos.results[0].poster_path;
-
-    let primero = datos.results.shift();
-    console.log(primero);
-    console.log(datos.results);
-
-
-
-    datos.results.forEach(element => {
-        let {
-            title,
-            poster_path,
-        } = element;
-        console.log(element.title);
-        let pagina = 'https://image.tmdb.org/t/p/w500';
-
-        let div = document.createElement('div');
-        div.className = 'fotosDiv';
-        div.innerHTML = ` <img src="${pagina}${poster_path}" alt="">
-                                    
-                                    `
-        console.log(div);
-        divEst.append(div);
-
-
-
-
-    });
-
-
-
-
-}
-
-// buscarEst(URLest);
-
-
-
-
-
-
-
-
+// busqueda de peliculas que se muestran en el slider
 // buscarEst2(URLest);
-buscarEst2(URLest);
 
 function buscarEst2(url) {
     fetch(url)
@@ -728,6 +662,11 @@ function buscarEst2(url) {
 }
 
 
+
+
+// funcion que crea el slider del inicio
+
+let divEst = document.getElementById('fotos')
 
 function ggg(data) {
     console.log(data);
@@ -751,7 +690,7 @@ function ggg(data) {
 
         let div = document.createElement('div');
         // div.className = 'fotosDiv';
-        div.innerHTML = ` <img src="${pagina}${poster_path}" class = "w-100" alt="">
+        div.innerHTML = ` <img src="${pagina}${poster_path}" class = "w-100 h-100" alt="">
                                     
                                     `
         console.log(div);
@@ -772,76 +711,86 @@ function ggg(data) {
 
 }
 
-let divSeries = document.getElementById('sectionEst');
+buscarEst2(URLest);
 
-function mostrarEstreno(datos) {
 
+function mostrarEstreno(datos, ub) {
+    console.log(ub);
     console.log(datos);
     console.log(datos.results);
-    
+
     let pagina = 'https://image.tmdb.org/t/p/w500';
 
     datos.results.forEach(element => {
-        let {
-            title,
-            poster_path,
-        } = element;
-        console.log(element.title);
 
-        let div = document.createElement('div');
-        div.className = 'card  col-md-2 col-sm-3 col-6';
-        div.innerHTML = `
-                                    <img src = "${pagina}${poster_path}" class = "card-img-top" alt = "...">
+        if (ub == divPeliculas) {
+            let {
+                title,
+                poster_path,
+                overview,
+            } = element;
+            console.log(element.title);
+            let div = document.createElement('div');
+            div.className = ' col-md-3 col-sm-3 col-6 mb-2 peliculas';
+            div.innerHTML = `
+                                                <img src = "${pagina}${poster_path}" class = "card-img-top w-100" alt = "...">
+                                                <div class="overview">
+                                                    <h3>${title}</h3>
+                                                    <h4>${overview}</h4>
+                                                </div>
+                                    `
+            console.log(div);
 
-                        `
-        console.log(div);
-        divSeries.append(div);
+
+            ub.append(div);
+
+
+        } else {
+            let {
+                name,
+                poster_path,
+                overview,
+            } = element;
+            console.log(element.title);
+            let div = document.createElement('div');
+            div.className = ' col-md-3 col-sm-3 col-6 mb-2 peliculas';
+            div.innerHTML = `
+                                                <img src = "${pagina}${poster_path}" class = "card-img-top w-100" alt = "...">
+                                                <div class="overview">
+                                                    <h3>${name}</h3>
+                                                    <h4>${overview}</h4>
+                                                </div>
+                                    `
+            console.log(div);
+
+
+            ub.append(div);
+
+        }
+
+
+
 
 
     });
 
 }
 
+
+//  llamando a las funciones que muestran los estrenos en el inicio
 estrenos2022(URLestr);
-
-
-function sectionIndex(datos, ub) {
-
-    console.log(datos);
-    console.log(datos.results);
-
-    let pagina = 'https://image.tmdb.org/t/p/w500';
-
-    datos.results.forEach(element => {
-        let {
-            title,
-            poster_path,
-        } = element;
-        console.log(element.title);
-
-        let div = document.createElement('div');
-        div.className = 'card  col-md-2 col-sm-3 col-6';
-        div.innerHTML = `
-                                    <img src = "${pagina}${poster_path}" class = "card-img-top" alt = "...">
-
-                        `
-        console.log(div);
-        ub.append(div);
-
-
-    });
-
-}
-
 estrenos2022(URLpSeries);
 
+
+
+//  funcion que cambia de color la nav al hacr scroll
 const navColor = document.querySelector('.navC');
 
-window.onscroll= function () {
+window.onscroll = function () {
     let pos = window.scrollY;
     console.log(pos);
-    if (pos>=100) {
-        
+    if (pos >= 100) {
+
         navColor.classList.add('navC2');
 
     } else {
