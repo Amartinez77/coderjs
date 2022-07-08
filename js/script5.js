@@ -346,6 +346,8 @@ const URLestr = URLpreg + 'primary_release_year=2022';
 const URLpSeries = URLpregSerie + 'sort_by=popularity.desc';
 // https://api.themoviedb.org/3/discover/tv?api_key=e72726580f0f1f91aad3742a0b9f3c33&language=es-AR&&sort_by=popularity.desc
 
+const URLplay = URLBASE + 'movie/';
+
 console.log(URL);
 
 //  funciones que realizan el fetch
@@ -378,7 +380,7 @@ function estrenos2022(url) {
     fetch(url)
         .then((response) => response.json())
         .then((data) => {
-            
+
             // url == URLestr ? mostrarEstreno(data, divSeries) : sectionIndex(data, divS)
             url == URLestr ? mostrarEstreno(data, divPeliculas) : mostrarEstreno(data, divSeries2)
 
@@ -728,6 +730,8 @@ function mostrarEstreno(datos, ub) {
                 title,
                 poster_path,
                 overview,
+                vote_average,
+                id,
             } = element;
             console.log(element.title);
             let div = document.createElement('div');
@@ -737,12 +741,20 @@ function mostrarEstreno(datos, ub) {
                                                 <div class="overview">
                                                     <h3>${title}</h3>
                                                     <h4>${overview}</h4>
+                                                    <h5>${vote_average} <span><a href="#" class="play" id="${id}"><i class="fa-solid fa-circle-play"></i></a></span></h5>
                                                 </div>
                                     `
             console.log(div);
-
+            console.log(id);
 
             ub.append(div);
+
+            document.getElementById(id).addEventListener('click', () => {
+                console.log(id);
+                play(id)
+
+            })
+
 
 
         } else {
@@ -750,6 +762,7 @@ function mostrarEstreno(datos, ub) {
                 name,
                 poster_path,
                 overview,
+                vote_average,
             } = element;
             console.log(element.title);
             let div = document.createElement('div');
@@ -759,6 +772,7 @@ function mostrarEstreno(datos, ub) {
                                                 <div class="overview">
                                                     <h3>${name}</h3>
                                                     <h4>${overview}</h4>
+                                                    <h5>${vote_average}</h5>
                                                 </div>
                                     `
             console.log(div);
@@ -776,7 +790,64 @@ function mostrarEstreno(datos, ub) {
 
 }
 
+function play(id) {
 
+    let pagina = URLplay + id + '/videos?' + APIKEY + '&language=es-AR';
+    console.log(pagina);
+
+    fetch(pagina)
+        .then(response => response.json())
+        .then(datos => {
+            console.log(datos);
+            openNav(datos)
+        })
+
+
+
+
+
+
+}
+
+/* Open when someone clicks on the span element */
+function openNav(datos) {
+    document.getElementById("myNav").style.width = "100%";
+    let div = document.getElementById('contenido');
+    div.innerHTML='';
+
+
+    console.log(datos.results);
+
+    let trailer = datos.results.filter(trailer => trailer.type == "Trailer");
+    console.log(trailer);
+
+    trailer.forEach(element => {
+        let {
+            key,
+            name,
+        } = element;
+        console.log(element.key);
+
+        let div2 = document.createElement('div');
+
+        div2.innerHTML = `
+                                
+                                    <h3>${name}</h3>
+                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/${key}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                    
+                                        
+                                    `
+        // console.log(div);
+        
+        div.append(div2);
+
+    });
+}
+
+/* Close when someone clicks on the "x" symbol inside the overlay */
+function closeNav() {
+    document.getElementById("myNav").style.width = "0%";
+}
 //  llamando a las funciones que muestran los estrenos en el inicio
 estrenos2022(URLestr);
 estrenos2022(URLpSeries);
