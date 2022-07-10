@@ -669,6 +669,7 @@ function buscarEst2(url) {
 // funcion que crea el slider del inicio
 
 let divEst = document.getElementById('fotos')
+let contC = document.getElementById('contCarrusel')
 
 function ggg(data) {
     console.log(data);
@@ -697,12 +698,20 @@ function ggg(data) {
                                     `
         console.log(div);
         div2.append(div);
+
     });
+
+
+
+    // contC.append(div3);
 
     new Glider(document.querySelector('.glider'), {
         slidesToShow: 5,
         slidesToScroll: 5,
         draggable: true,
+        duration: 0.5,
+        scrollLock: true,
+        scrollLockDelay: 250,
         dots: '.dots',
         arrows: {
             prev: '.glider-prev',
@@ -725,6 +734,8 @@ function mostrarEstreno(datos, ub) {
 
     datos.results.forEach(element => {
 
+        let pelicula = datos.results;
+
         if (ub == divPeliculas) {
             let {
                 title,
@@ -737,12 +748,14 @@ function mostrarEstreno(datos, ub) {
             let div = document.createElement('div');
             div.className = ' col-md-3 col-sm-3 col-6 mb-2 peliculas';
             div.innerHTML = `
-                                                <img src = "${pagina}${poster_path}" class = "card-img-top w-100" alt = "...">
-                                                <div class="overview">
-                                                    <h3>${title}</h3>
-                                                    <h4>${overview}</h4>
-                                                    <h5>${vote_average} <span><a href="#" class="play" id="${id}"><i class="fa-solid fa-circle-play"></i></a></span></h5>
-                                                </div>
+                                        <img src = "${pagina}${poster_path}" class = "card-img-top w-100" alt = "...">
+                                        
+                                        <div class="overview">
+                                            <h3>${title}</h3>
+                                            <h4>${overview}</h4>
+                                            <h5>${vote_average} <span><a href="#" class="play" id="${id}"><i class="fa-solid fa-circle-play"></i></a></span></h5>
+                                            
+                                        </div>
                                     `
             console.log(div);
             console.log(id);
@@ -751,7 +764,7 @@ function mostrarEstreno(datos, ub) {
 
             document.getElementById(id).addEventListener('click', () => {
                 console.log(id);
-                play(id)
+                play(id, pelicula)
 
             })
 
@@ -790,7 +803,7 @@ function mostrarEstreno(datos, ub) {
 
 }
 
-function play(id) {
+function play(id, pelicula) {
 
     let pagina = URLplay + id + '/videos?' + APIKEY + '&language=es-AR';
     console.log(pagina);
@@ -799,7 +812,7 @@ function play(id) {
         .then(response => response.json())
         .then(datos => {
             console.log(datos);
-            openNav(datos)
+            openNav(datos, pelicula, id)
         })
 
 
@@ -809,14 +822,22 @@ function play(id) {
 
 }
 
-/* Open when someone clicks on the span element */
-function openNav(datos) {
+/* funcion que hace el overlay de w3school */
+function openNav(datos, pelicula, id) {
     document.getElementById("myNav").style.width = "100%";
     let div = document.getElementById('contenido');
-    div.innerHTML='';
+    div.innerHTML = '';
+    console.log(pelicula[id]);
 
+    let datosPelicula = pelicula.filter(iden => iden.id == id);
+    console.log(datosPelicula);
+
+    let sinop = datosPelicula.overview
 
     console.log(datos.results);
+
+
+
 
     let trailer = datos.results.filter(trailer => trailer.type == "Trailer");
     console.log(trailer);
@@ -827,19 +848,52 @@ function openNav(datos) {
             name,
         } = element;
         console.log(element.key);
+        datosPelicula.forEach(element => {
+            let {
+                title,
+                overview,
+                vote_average,
+                id,
+            } = element;
 
-        let div2 = document.createElement('div');
+            const descrip = element.overview
+            console.log(element.title);
 
-        div2.innerHTML = `
-                                
-                                    <h3>${name}</h3>
-                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/${key}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                                    
+            let div2 = document.createElement('div');
+
+            div2.innerHTML = `
+                                                <div class="container">
+                                                    <div class="card mb-3 videoResp">
+                                                        <iframe width="560" height="315" src="https://www.youtube.com/embed/${key}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">${name}</h5>
+                                                            <p class="card-text">Sinopsis: ${overview}</p>
+                                                            <p class="card-text"><small class="text-muted">puntaje IMDB: ${vote_average}</small></p>
+                                                            <a href="#" class="${id}"><i class="fa-regular fa-heart"></i></a>
+                                                        </div>
+                                                    </div>
+                                                        
+                                                </div>
+                                                                
+                                                            
                                         
-                                    `
-        // console.log(div);
-        
-        div.append(div2);
+                                                    
+                                                `
+
+            div.append(div2);
+            // let ident=id;
+            // document.getElementsByClassName(`${ident}`).addEventListener('click', () => {
+            //     console.log(id);
+                
+
+            // })
+
+        })
+
+
+
+
+
 
     });
 }

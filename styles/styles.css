@@ -1,11 +1,22 @@
 html,
 body {
     height: 100%;
+    margin: 0;
 }
 
 
 
+/* .row {
+    padding-left: 0;
+    padding-right: 0;
+} */
 
+.row>* {
+
+    padding-left: 0;
+    padding-right: 0;
+
+}
 
 .carrusel {
     margin-top: 55px;
@@ -81,6 +92,10 @@ body {
     font-size: 15px;
 }
 
+.corazon{
+    position: absolute;
+}
+
 
 /* The Overlay (background) */
 .overlay {
@@ -122,7 +137,7 @@ body {
     text-decoration: none;
     font-size: 36px;
     color: #818181;
-    display: block;
+    /* display: flow-root; */
     /* Display block instead of inline */
     transition: 0.3s;
     /* Transition effects on hover (color) */
@@ -155,7 +170,26 @@ body {
     }
 }
 
+/* Start: Video Responsive */
+ .videoResp {
+    margin-right: auto;
+    margin-left: auto;
+    width: 70%;
+    text-align: center;
+    /* overflow: hidden; */
+    /* padding-bottom: 200px; */
+    /* Adecua este valor para controlar la altura del video */
+ align-content: center;
+    /* height: 0; */
+}
 
+.videoResp iframe {
+    margin-right: auto;
+    margin-left: auto;
+    width: -webkit-fill-available;
+} 
+
+/* End: Video Responsive */
 
 
 .form-signin {
