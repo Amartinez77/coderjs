@@ -6,10 +6,6 @@ body {
 
 
 
-/* .row {
-    padding-left: 0;
-    padding-right: 0;
-} */
 
 .row>* {
 
@@ -97,7 +93,9 @@ body {
 }
 
 
-/* The Overlay (background) */
+/*css del overlay de  https://www.w3schools.com/howto/howto_js_fullscreen_overlay.asp */
+/* modifique algunas cosas para que se adapte mejor a mi pagina */
+
 .overlay {
     /* Height & width depends on how you want to reveal the overlay (see JS below) */
     height: 100%;
@@ -170,7 +168,7 @@ body {
     }
 }
 
-/* Start: Video Responsive */
+/* css que gregue para que el video se ajustara mejor a la pantalla*/
  .videoResp {
     margin-right: auto;
     margin-left: auto;
@@ -189,7 +187,7 @@ body {
     width: -webkit-fill-available;
 } 
 
-/* End: Video Responsive */
+
 
 
 .form-signin {

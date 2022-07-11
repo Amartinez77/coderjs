@@ -55,11 +55,6 @@ const URLimg = 'https://image.tmdb.org/t/p/w500/';
 
 
 
-
-
-console.log(series);
-console.log(peliculas);
-
 let divCard = document.getElementById('contenedorPelis');
 
 //  funcion que crea las cards con los array de peliculas y series
@@ -84,7 +79,7 @@ const faraday = (array) => {
                             </div>
 
                         `
-        console.log(div);
+
         divCard.append(div);
 
     }
@@ -110,9 +105,7 @@ function selectHtml() {
     /* Para obtener el valor */
     let cod = document.getElementById("pppp").value;
     cod2 = cod;
-    console.log(cod);
-    console.log(cod2);
-
+ 
     return cod;
 }
 
@@ -123,26 +116,18 @@ function selectHtml() {
 //  funcion que me trae el texto ingresado en la busqueda
 let textoBuscar = document.getElementById('inputText');
 
-console.log();
-
 
 
 let txt = '';
 textoBuscar.addEventListener('input', () => {
-    console.log(textoBuscar.value);
+
 
     textoBuscar.value === "" ? txt = "" : txt = textoBuscar.value;
 
 })
 
-
-
-
 const btnBuscar = document.getElementById('botonResultado');
-
-
 let imprimible = [];
-
 let historial = [];
 
 
@@ -151,7 +136,7 @@ let historial = [];
 
 const createHistory = (array, cod2) => {
 
-    console.log(array);
+ 
     if (cod2 == 1) {
         historial.push({
             id: array.id,
@@ -167,7 +152,7 @@ const createHistory = (array, cod2) => {
     }
 
     localStorage.setItem("historial", JSON.stringify(historial));
-    console.log(JSON.stringify(historial));
+    
 }
 
 
@@ -198,25 +183,20 @@ const mostrarRecientes = (array) => {
         } = element;
 
         let pagina = 'https://image.tmdb.org/t/p/w500';
-        console.log(pagina);
-        console.log("el source", source);
-        console.log("el titulo", titulo);
-        console.log("el titulo", name);
 
-        console.log(element.titulo);
+
+     
         let div = document.createElement('div')
         div.className = 'card col-md-2'
         div.innerHTML = `
                         
                             <img src = "${pagina}${element.source}" class = "card-img-top" alt = "...">
                             <div class="card-body">
-                            <h5 class="card-title">${titulo}</h5>
-                            <p class="card-text">Calidad FullHD.</p>
-                            <a href="#" class="btn btn-primary">ver online</a>
+                            <h5 class="card-title">${titulo}</h5>                            
                             </div>
 
                         `
-        console.log(div);
+
         divCard3.append(div);
 
     }
@@ -231,11 +211,14 @@ const limpiar2 = (array) => {
 }
 
 function borrarDatos(storage) {
-    storage.clear()
+    storage.clear();
+    storage.removeItem(historial);
 }
 
 btnVaciarLocalStorage.addEventListener('click', () => {
+
     borrarDatos(localStorage);
+
     borrarDatos(sessionStorage);
     limpiar2(divCard3);
     limpiar(divCard);
@@ -246,11 +229,11 @@ btnVaciarLocalStorage.addEventListener('click', () => {
 
 
 
-console.log(historial);
+
 
 if (historial.length != 0) {
     usuario = JSON.parse(localStorage.getItem('historial'));
-    console.log(usuario);
+
     mostrarRecientes(usuario);
 
 }
@@ -348,7 +331,7 @@ const URLpSeries = URLpregSerie + 'sort_by=popularity.desc';
 
 const URLplay = URLBASE + 'movie/';
 
-console.log(URL);
+
 
 //  funciones que realizan el fetch
 
@@ -381,10 +364,9 @@ function estrenos2022(url) {
         .then((response) => response.json())
         .then((data) => {
 
-            // url == URLestr ? mostrarEstreno(data, divSeries) : sectionIndex(data, divS)
+
             url == URLestr ? mostrarEstreno(data, divPeliculas) : mostrarEstreno(data, divSeries2)
 
-            console.log(data);
         })
 }
 
@@ -392,13 +374,13 @@ function estrenos2022(url) {
 
 
 
-//  funcion que voy a agregar para la entrega final, busca en que servicio esta disponible
+
 
 function buscarProvedor(url) {
     fetch(url)
         .then(response => response.json())
         .then(response => {
-            console.log(response.results);
+
             mostrarProv(response.results);
             createHistory(response.results);
 
@@ -411,7 +393,7 @@ let divReco = document.getElementById('recomend');
 // funcion que muestra peliculas relacionadas
 
 function mostrar(datos) {
-    console.log(datos);
+
     divReco.innerHTML = '';
     let titulos = document.createElement('h3')
     titulos.className = 'text-center'
@@ -424,8 +406,6 @@ function mostrar(datos) {
             title,
             poster_path,
         } = element;
-        console.log(element.title);
-
 
         let titu = document.createElement('div');
         titu.classList.add('card', 'col-md-3');
@@ -441,64 +421,28 @@ function mostrar(datos) {
 
 }
 
-//  funcion que muestra en que servicio esta disponible (netflix), todavia no esta en uso
 
-function mostrarProv(datos2) {
-    console.log(datos2);
-    console.log(datos2.AR.flatrate[0].provider_name);
-    let pp = datos2.AR.flatrate[0].provider_name;
-    let nn = 'disponible en ' + pp;
-    console.log(nn);
 
-}
-
-//  funcion que no esta en uso, busca el ID
-
-function netflix(id) {
-
-    let URLprov = URLBASE + 'movie/' + id + '/watch/providers?' + APIKEY;
-
-    buscarProvedor(URLprov);
-    console.log(URLprov);
-    return URLprov;
-
-}
 
 
 // funcion que hace el filtrado de peliculas 
 
 const filtrarPeliculas = (texto, array) => {
-    console.log(texto);
-    console.log(array);
-    console.log(array[0].title);
+
     var arr = Object.keys(array).map(function (key) {
         return [Number(key), array[key]];
     });
-    console.log(arr);
+
 
     const filtrado = array.filter((title) => array[0].title.toLowerCase().includes(texto.toLowerCase()));
 
-
-    console.log(array.find(titulo => titulo.title.toLowerCase === (texto.toLowerCase)));
     const filtrado3 = array.find(titulo => titulo.title.toLowerCase === (texto.toLowerCase));
 
-    console.log(filtrado3);
-    console.log(filtrado3.length);
-
-
-    console.log(filtrado);
-
-
-    // Object.entries(filtrado3).length === 0
     if (Object.entries(filtrado3).length > 0) {
-        // imprimible = filtrado.map((array) => array.title);
 
-        // alert("Las series que se ajustan a tu busqueda son:\n- " + imprimible.join('\n- '));
-        // limpiar(divCard);
+
         mostrarFiltrado(filtrado3, cod2);
         createHistory(filtrado3, cod2);
-        // console.log(imprimible);
-
 
     } else {
         alert('Lo sentimos. No encontramos coincidencias en nuestro catálogo')
@@ -512,7 +456,7 @@ let divReco5 = document.getElementById('busqueda');
 // funcion que muestra la serie ya filtrada
 
 function mostrarFiltrado(datos, cod2) {
-    console.log(datos);
+    
     divReco5.innerHTML = '';
 
     let titulos = document.createElement('h3')
@@ -550,15 +494,13 @@ function mostrarFiltrado(datos, cod2) {
         divReco5.append(titu);
     }
 
-
-
 };
 
 
 //  funcion que muestra las series relacionadas con la busqueda
 
 function mostrarSeries(datos) {
-    console.log(datos);
+  
     divReco.innerHTML = '';
     let titulos = document.createElement('h3')
     titulos.className = 'text-center'
@@ -571,10 +513,10 @@ function mostrarSeries(datos) {
             name,
             poster_path,
         } = element;
-        console.log(element.name);
+
 
         let titu = document.createElement('div');
-        titu.classList.add('card', 'col-md-3');
+        titu.classList.add('card', 'col-md-2');
         titu.innerHTML = ` <img src="${URLimg}${poster_path}" alt="">
                                     <h3>${name}</h3> 
                                     
@@ -595,23 +537,17 @@ const filtrarSeries = (texto, array) => {
     var arr = Object.keys(array).map(function (key) {
         return [Number(key), array[key]];
     });
-    console.log(arr);
+
 
 
     console.log(array.find(titulo => titulo.name.toLowerCase === (texto.toLowerCase)));
     const filtrado3 = array.find(titulo => titulo.name.toLowerCase === (texto.toLowerCase));
-    // console.log(filtrado2);
-    console.log(filtrado3);
-    console.log(filtrado3.length);
-
-
-
 
     if (Object.entries(filtrado3).length > 0) {
 
         mostrarFiltrado(filtrado3, cod2);
         createHistory(filtrado3, cod2);
-        console.log(imprimible);
+  
 
 
     } else {
@@ -672,8 +608,6 @@ let divEst = document.getElementById('fotos')
 let contC = document.getElementById('contCarrusel')
 
 function ggg(data) {
-    console.log(data);
-
 
     let div1 = document.createElement('div');
     div1.className = 'glider-contain';
@@ -688,7 +622,7 @@ function ggg(data) {
             title,
             poster_path,
         } = element;
-        console.log(element.title);
+       
         let pagina = 'https://image.tmdb.org/t/p/w500';
 
         let div = document.createElement('div');
@@ -696,7 +630,7 @@ function ggg(data) {
         div.innerHTML = ` <img src="${pagina}${poster_path}" class = "w-100 h-100" alt="">
                                     
                                     `
-        console.log(div);
+    
         div2.append(div);
 
     });
@@ -724,11 +658,8 @@ function ggg(data) {
 
 buscarEst2(URLest);
 
-
+//  funcion que crea los card del unicio con peliculas y estrenos, ademas crea el overlay 
 function mostrarEstreno(datos, ub) {
-    console.log(ub);
-    console.log(datos);
-    console.log(datos.results);
 
     let pagina = 'https://image.tmdb.org/t/p/w500';
 
@@ -744,7 +675,7 @@ function mostrarEstreno(datos, ub) {
                 vote_average,
                 id,
             } = element;
-            console.log(element.title);
+        
             let div = document.createElement('div');
             div.className = ' col-md-3 col-sm-3 col-6 mb-2 peliculas';
             div.innerHTML = `
@@ -757,13 +688,12 @@ function mostrarEstreno(datos, ub) {
                                             
                                         </div>
                                     `
-            console.log(div);
-            console.log(id);
+        
 
             ub.append(div);
 
             document.getElementById(id).addEventListener('click', () => {
-                console.log(id);
+         
                 play(id, pelicula)
 
             })
@@ -777,7 +707,7 @@ function mostrarEstreno(datos, ub) {
                 overview,
                 vote_average,
             } = element;
-            console.log(element.title);
+        
             let div = document.createElement('div');
             div.className = ' col-md-3 col-sm-3 col-6 mb-2 peliculas';
             div.innerHTML = `
@@ -788,30 +718,27 @@ function mostrarEstreno(datos, ub) {
                                                     <h5>${vote_average}</h5>
                                                 </div>
                                     `
-            console.log(div);
 
 
             ub.append(div);
 
         }
 
-
-
-
-
     });
 
 }
 
+//  funcion que busca el trailer de las peliculas
+
 function play(id, pelicula) {
 
     let pagina = URLplay + id + '/videos?' + APIKEY + '&language=es-AR';
-    console.log(pagina);
+
 
     fetch(pagina)
         .then(response => response.json())
         .then(datos => {
-            console.log(datos);
+    
             openNav(datos, pelicula, id)
         })
 
@@ -827,27 +754,24 @@ function openNav(datos, pelicula, id) {
     document.getElementById("myNav").style.width = "100%";
     let div = document.getElementById('contenido');
     div.innerHTML = '';
-    console.log(pelicula[id]);
+
 
     let datosPelicula = pelicula.filter(iden => iden.id == id);
-    console.log(datosPelicula);
+  
 
     let sinop = datosPelicula.overview
-
-    console.log(datos.results);
-
 
 
 
     let trailer = datos.results.filter(trailer => trailer.type == "Trailer");
-    console.log(trailer);
+
 
     trailer.forEach(element => {
         let {
             key,
             name,
         } = element;
-        console.log(element.key);
+
         datosPelicula.forEach(element => {
             let {
                 title,
@@ -857,7 +781,7 @@ function openNav(datos, pelicula, id) {
             } = element;
 
             const descrip = element.overview
-            console.log(element.title);
+
 
             let div2 = document.createElement('div');
 
@@ -874,31 +798,19 @@ function openNav(datos, pelicula, id) {
                                                     </div>
                                                         
                                                 </div>
-                                                                
-                                                            
-                                        
-                                                    
                                                 `
 
             div.append(div2);
-            // let ident=id;
-            // document.getElementsByClassName(`${ident}`).addEventListener('click', () => {
-            //     console.log(id);
-                
-
-            // })
 
         })
 
-
-
-
-
-
     });
+
 }
 
-/* Close when someone clicks on the "x" symbol inside the overlay */
+
+
+/* funcion que cierra el overlay */
 function closeNav() {
     document.getElementById("myNav").style.width = "0%";
 }
@@ -908,7 +820,7 @@ estrenos2022(URLpSeries);
 
 
 
-//  funcion que cambia de color la nav al hacr scroll
+//  funcion que cambia de color la nav al hacer scroll
 const navColor = document.querySelector('.navC');
 
 window.onscroll = function () {

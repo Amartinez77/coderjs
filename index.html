@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Document</title>
+    <title>Busca Tu Peli</title>
 
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -21,7 +21,7 @@
 
 </head>
 
-<body>
+<body id="body">
 
 
     <nav class="navbar navbar-expand-lg fixed-top navC">
@@ -44,10 +44,10 @@
                         <a class="nav-link" href="#sectionSeries">Series</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#scrollspyHeading1">Buscador</a>
+                        <a class="nav-link" href="#buscador2">Buscador</a>
                     </li>
                 </ul>
-                
+
             </div>
         </div>
     </nav>
@@ -59,18 +59,8 @@
 
         <!-- <button aria-label="Previous" class="glider-prev">«</button>
         <button aria-label="Next" class="glider-next">»</button>-->
-        <div role="tablist" class="dots"></div> 
+        <div role="tablist" class="dots"></div>
     </header>
-
-
-
-
-        
-    
-    <!-- </div> -->
-
-
-
 
 
     <main class="container text-center">
@@ -83,19 +73,16 @@
 
             <!-- The overlay -->
             <div id="myNav" class="overlay">
-            
+
                 <!-- Button to close the overlay navigation -->
                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            
+
                 <!-- Overlay content -->
                 <div class="overlay-content" id="contenido">
-                
+
                 </div>
-            
+
             </div>
-            
-            <!-- Use any element to open/show the overlay navigation menu -->
-            <!-- <span onclick="openNav()">open</span> -->
 
         </section>
 
@@ -107,25 +94,26 @@
 
 
 
-        <section  id="scrollspyHeading1">
+        <section id="buscador2">
             <h2 class="mt-5 " id="buscador">Buscador de peliculas y series</h1>
 
-            <form>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control w-75" id="inputText" required>
-                    <select class="form-select" aria-label="opciones" id="pppp" onchange="selectHtml()" required>
-                        <option selected>Opciones</option>
-                        <option value="1">Series</option>
-                        <option value="2">Peliculas</option>
-                        <!-- <option value="3">Three</option> -->
-                    </select>
-                    <button class=" btn btn-lg btn btn-outline-secondary w-100" type="button"
-                        id="botonResultado">Resultado</button>
-                    <button class="w-100 btn btn-lg btn-danger" id="btnVaciarLocalStorage" type="submit">Borrar todos los
-                        datos</button>
-                    <!-- <input type="submit" class="btn btn-lg btn btn-outline-secondary w-100" type="submit" id="botonResultado"> -->
-                </div>
-            </form>
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control w-75" id="inputText" required>
+                        <select class="form-select" aria-label="opciones" id="pppp" onchange="selectHtml()" required>
+                            <option selected>Opciones</option>
+                            <option value="1">Series</option>
+                            <option value="2">Peliculas</option>
+                            <!-- <option value="3">Three</option> -->
+                        </select>
+                        <button class=" btn btn-lg btn btn-outline-secondary w-100" type="button"
+                            id="botonResultado">Resultado</button>
+                        <button class="w-100 btn btn-lg btn-danger" id="btnVaciarLocalStorage" type="submit">Borrar
+                            todos los
+                            datos</button>
+                
+                    </div>
+                </form>
 
         </section>
 
@@ -142,7 +130,7 @@
         <section class="row" id="contenedorPelis">
         </section>
 
-        <!-- <section class="row" id="recomend"></section> -->
+
 
         <section>
             <section class="row" id="contHistorial"></section>
@@ -153,7 +141,19 @@
 
     </article>
 
-    <a href="#" class="play"><i class="fa-solid fa-circle-play"></i></a>
+    <div class="b-example-divider"></div>
+    
+    <div class="container">
+        <footer class="py-3 my-4">
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                <li class="nav-item"><a href="#body" class="nav-link px-2 text-muted">Home</a></li>
+                <li class="nav-item"><a href="#sectionEst" class="nav-link px-2 text-muted">Peliculas</a></li>
+                <li class="nav-item"><a href="#sectionSeries" class="nav-link px-2 text-muted">Series</a></li>
+                <li class="nav-item"><a href="#buscador2" class="nav-link px-2 text-muted">Buscador</a></li>
+            </ul>
+            <p class="text-center text-muted">&copy; Proyecto de buscador de Series y peliculas para el curso de JavaScrip en Coderhouse. Se Uso la API de https://www.themoviedb.org/ y las librerias Sweetalert2 y Glider-js</p>
+        </footer>
+    </div>
 
 
     <!-- JavaScript Bundle with Popper -->
@@ -175,7 +175,7 @@
 
 
 
-    <!-- Script 5 correspondiente al desafio INCORPORAR EVENTOS                      -->
+    <!-- Script 5 correspondiente a la entrega final                      -->
 
 
     <script src="./js/script5.js"></script>
@@ -210,4 +210,3 @@
 </body>
 
 </html>
-
